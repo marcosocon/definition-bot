@@ -16,6 +16,7 @@ app.post('/term', function (req, res) {
 	var term = req.body.text;
 	request.get(base + term, function (err, response, body) {
 		var processedResponse = processBody(JSON.parse(body));
+		res.setHeader('Content-Type', 'application/json');
 		res.send(processedResponse);
 	});
 });
