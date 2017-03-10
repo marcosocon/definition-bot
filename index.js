@@ -14,7 +14,7 @@ var baseUrl = 'http://api.urbandictionary.com/v0/define?term=';
 
 app.post('/', function (req, res) {
 	var term = req.body.text.toUpperCase();
-	request.get(base + term, function (err, response, body) {
+	request.get(baseUrl + term, function (err, response, body) {
 		var processedResponse = processBody(JSON.parse(body));
 		res.setHeader('Content-Type', 'application/json');
 		var result = {
