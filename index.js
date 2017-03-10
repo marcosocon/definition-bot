@@ -23,12 +23,17 @@ app.post('/term', function (req, res) {
 function processBody(body) {
 	var res = [];
 	body.list.forEach(function(term){
-		var item = {
-			word: term.word,
-			definition: term.definition,
-			example: term.example
+		var result = {
+			response_type: 'in_channel',
+			text: 'Word: ' + term.word,
+			attachments: [
+				{
+					text: term.definition,
+					color: '#36a64f'
+				}
+			]
 		};
-		res.push(item);
+		res.push(result);
 	});
 	return res;
 }
