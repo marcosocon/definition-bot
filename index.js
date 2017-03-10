@@ -12,29 +12,31 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 var base = 'http://api.urbandictionary.com/v0/define?term=';
 
-app.post('/term', function (req, res) {
-	var term = req.body.text;
+app.post('/', function (req, res) {
+	var term = req.body.text.toUpperCase();
 	request.get(base + term, function (err, response, body) {
 		var processedResponse = processBody(JSON.parse(body));
 		res.setHeader('Content-Type', 'application/json');
-		res.send(processedResponse);
+		var result = {
+			response_type: 'in_channel',
+			attachments: [
+				{
+					author_name: 'Dictionary Bot',
+					title: 'Results For:	' + term,
+					text: processedResponse,
+					color: '#36a64f',
+					thumb_url: 'http://i0.kym-cdn.com/entries/icons/original/000/016/956/10042483-funny-robot-sit-with-headphones.jpg'
+				}
+			]
+		};
+		res.send(result);
 	});
 });
 
 function processBody(body) {
-	var res = [];
+	var res = '';
 	body.list.forEach(function(term){
-		var result = {
-			response_type: 'in_channel',
-			text: 'Word: ' + term.word,
-			attachments: [
-				{
-					text: term.definition,
-					color: '#36a64f'
-				}
-			]
-		};
-		res.push(result);
+		res += term.definition + '\n \n';
 	});
 	return res;
 }
