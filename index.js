@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
-var base = 'http://api.urbandictionary.com/v0/define?term=';
+var baseUrl = 'http://api.urbandictionary.com/v0/define?term=';
 
 app.post('/', function (req, res) {
 	var term = req.body.text.toUpperCase();
@@ -34,11 +34,11 @@ app.post('/', function (req, res) {
 });
 
 function processBody(body) {
-	var res = '';
+	var processed = '';
 	body.list.forEach(function(term){
-		res += term.definition + '\n \n';
+		processed += term.definition + '\n \n';
 	});
-	return res;
+	return processed;
 }
 
 app.listen(app.get('port'), function () {
